@@ -1,0 +1,17 @@
+import * as bcrypt from "bcryptjs";
+
+export class HashManager {
+    
+    public hash = async (plainText: string): Promise<string> => {
+        const rounds = Number(process.env.BCRYPT_COST);
+        const salt = await bcrypt.genSalt(rounds);
+        
+        return await bcrypt.hash(plainText, salt);
+    };
+
+    public hashCompare = async (plainText: string, cypherText: string): Promise<boolean> => {
+        return await bcrypt.compare(plainText, cypherText);
+    };
+};
+
+export default new HashManager();
