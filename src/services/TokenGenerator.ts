@@ -19,7 +19,9 @@ export class TokenGenerator {
             process.env.JWT_KEY as string
         ) as AuthenticationData;
     };
-}     
+};
+
+export default new TokenGenerator();
 
 export type AuthenticationData = {
     id: string,

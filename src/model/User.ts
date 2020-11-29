@@ -8,7 +8,7 @@ export class User {
         private email: string,
         private password: string,
         private role: string,
-    ) {}
+    ) {};
 
     public getId = (): string => this.id;
     public getName = (): string => this.name;
