@@ -22,7 +22,7 @@ export class UserBusiness {
     ) {
         try {
             if (!name || !email || !password || !role) {
-                throw new CustomError(422, "Missing input");
+                throw new CustomError(422, "Missing input.");
             };
 
             if (!email.includes("@")) {
@@ -30,7 +30,7 @@ export class UserBusiness {
             };
 
             if (password.length < 6) {
-                throw new CustomError(422, "Your password must have more than 6 characters");
+                throw new CustomError(422, "Your password must have more than 6 characters.");
             };
 
             const id = this.idGenerator.generateId();
@@ -48,7 +48,7 @@ export class UserBusiness {
             return {token};
         } catch (error) {
             if (error.message.includes("for key 'email'")) {
-                throw new CustomError(409, "Email already in use");
+                throw new CustomError(409, "Email already in use.");
             };
     
             throw new CustomError(error.statusCode, error.message);
@@ -58,11 +58,11 @@ export class UserBusiness {
     public async login (email: string, password: string) {
         try {
             if(!email || !password) {
-                throw new CustomError(422, "Missing input");
+                throw new CustomError(422, "Missing input.");
             };
 
             if (!email.includes("@")) {
-                throw new CustomError(422, "Invalid e-mail");
+                throw new CustomError(422, "Invalid e-mail.");
             };
 
             const user = await this.userDatabase.getUserByEmail(email);
