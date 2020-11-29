@@ -21,7 +21,6 @@ export class UserBusiness {
         role: string
     ) {
         try {
-            
             if (!name || !email || !password || !role) {
                 throw new CustomError(422, "Missing input");
             };
@@ -52,6 +51,39 @@ export class UserBusiness {
                 throw new CustomError(409, "Email already in use");
             };
     
+            throw new CustomError(error.statusCode, error.message);
+        };
+    };
+
+    public async login (email: string, password: string) {
+        try {
+            if(!email || !password) {
+                throw new CustomError(422, "Missing input");
+            };
+
+            if (!email.includes("@")) {
+                throw new CustomError(422, "Invalid e-mail");
+            };
+
+            const user = await this.userDatabase.getUserByEmail(email);
+
+            if (!user) {
+                throw new CustomError(401, "Invalid credentials.");
+            };
+
+            const isPasswordCorrect = this.hashManager.hashCompare(password, user.getPassword());
+
+            if (!isPasswordCorrect) {
+                throw new CustomError(401, "Invalid credentials.");
+            };
+
+            const token = this.tokenGenerator.generateToken({
+                id: user.getId(),
+                role: stringToUserRole(user.getRole())
+            });
+
+            return {token};
+        } catch (error) {
             throw new CustomError(error.statusCode, error.message);
         };
     };
