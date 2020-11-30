@@ -16,6 +16,19 @@ export class BandController {
             res.status(statusCode || 400).send({ message });
         };
     };
+
+    public async getBandDetails(req: Request, res: Response) {
+        try {
+            const input = (req.params.idOrName || req.params.idOrName);
+
+            const result = await bandBusiness.getBandDetails(input);
+
+            res.status(200).send(result);
+        } catch (error) {
+            const {statusCode, message} = error;
+            res.status(statusCode || 400).send({ message });
+        };
+    };
 };
 
 export default new BandController();
