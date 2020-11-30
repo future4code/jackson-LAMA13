@@ -11,7 +11,7 @@ export class BandDatabase extends BaseDatabase {
             new Band (
                 dbModel.id,
                 dbModel.name,
-                dbModel.genre,
+                dbModel.music_genre,
                 dbModel.responsible
             )
         );
@@ -26,6 +26,19 @@ export class BandDatabase extends BaseDatabase {
                 music_genre: band.getGenre(),
                 responsible: band.getResponsible()
             });
+        } catch (error) {
+            throw new Error(error.sqlMessage || error.message);
+        };
+    };
+
+    public async getBandDetailsByIdOrName(input: string) {
+        try {
+            const result = await BaseDatabase.connection(this.tableName)
+            .select("*")
+            .where({id: input})
+            .orWhere({name: input});
+
+            return this.toModel(result[0]);
         } catch (error) {
             throw new Error(error.sqlMessage || error.message);
         };

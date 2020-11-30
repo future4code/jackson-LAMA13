@@ -43,6 +43,26 @@ export class BandBusiness {
             throw new CustomError(error.statusCode, error.message);
         };
     };
+
+    public async getBandDetails(
+        input: string
+    ): Promise<Band | undefined> {
+        try {
+            if (!input) {
+                throw new CustomError(422, "Missing input.");
+            };
+
+            const band = await this.bandDatabase.getBandDetailsByIdOrName(input);
+
+            if (!band) {
+                throw new CustomError(404, "Band not found.");
+            };
+
+            return band;
+        } catch (error) {
+            throw new CustomError(error.statusCode, error.message);
+        };
+    };
 };
 
 export default new BandBusiness(
